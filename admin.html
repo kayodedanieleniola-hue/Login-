@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-brand {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand i {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: #667eea;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .welcome-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            margin-bottom: 30px;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .welcome-text h1 {
+            color: #1a1a2e;
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .welcome-text p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .profile-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 36px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .profile-info h2 {
+            color: #1a1a2e;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .profile-info p {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .profile-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .profile-badge.unverified {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .card-icon {
+            font-size: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            color: #1a1a2e;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-text {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .card-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card-link:hover {
+            text-decoration: underline;
+        }
+
+        .account-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: #1a1a2e;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-label {
+            color: #888;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #1a1a2e;
+            font-size: 16px;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(244, 67, 54, 0.4);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert.error {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #f44336;
+        }
+
+        .alert.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #4caf50;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            font-size: 13px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .navbar-menu {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .welcome-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .profile-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .welcome-text h1 {
+                font-size: 24px;
+            }
+
+            .info-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="navbar-brand">
+            <i class="fas fa-dashboard"></i>
+            Dashboard
+        </div>
+        <div class="navbar-menu">
+            <span class="nav-link" id="userDisplay"></span>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Alert Messages -->
+        <div class="alert" id="alertMessage"></div>
+
+        <!-- Loading State -->
+        <div class="loading" id="loadingState" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading your dashboard...</p>
+        </div>
+
+        <!-- Welcome Section -->
+        <div class="welcome-section" id="welcomeSection" style="display: none;">
+            <div class="welcome-header">
+                <div class="welcome-text">
+                    <h1>Welcome, <span id="welcomeName">User</span>! 👋</h1>
+                    <p id="welcomeTime"></p>
+                </div>
+                <div class="profile-card">
+                    <div class="profile-avatar" id="profileAvatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h2 id="profileUsername"></h2>
+                        <p id="profileEmail"></p>
+                        <div id="verificationStatus"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="dashboard-grid" id="dashboardGrid" style="display: none;">
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="card-title">Secure Account</div>
+                <div class="card-text">
+                    Your account is protected with bcrypt encryption.
+                    <br><br>
+                    <a class="card-link" href="#" onclick="scrollToSection('security')">View Security →</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="card-title">Email Verified</div>
+                <div class="card-text" id="emailVerificationCard">
+                    Your email has been verified.
+                    <br><br>
+                    <a class="card-link" href="#" onclick="alert('Email verified!')">Verify Now →</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="card-title">Settings</div>
+                <div class="card-text">
+                    Manage your profile and preferences.
+                    <br><br>
+                    <a class="card-link" href="#" onclick="scrollToSection('account')">Go to Settings →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Information Section -->
+        <div class="account-section" id="accountSection" style="display: none;">
+            <h2 class="section-title">
+                <i class="fas fa-user-circle"></i> Account Information
+            </h2>
+            <div class="info-group">
+                <div class="info-item">
+                    <div class="info-label">Email Address</div>
+                    <div class="info-value" id="displayEmail"></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Username</div>
+                    <div class="info-value" id="displayUsername"></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">User ID</div>
+                    <div class="info-value" id="displayUserId"></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Signup Method</div>
+                    <div class="info-value" id="displaySignupMethod"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Section -->
+        <div class="account-section" id="securitySection" style="display: none;">
+            <h2 class="section-title">
+                <i class="fas fa-shield-alt"></i> Security Settings
+            </h2>
+            <div class="info-group">
+                <div class="info-item">
+                    <div class="info-label">Session Token</div>
+                    <div class="info-value" style="font-size: 12px; font-family: monospace;">
+                        <span id="sessionTokenDisplay"></span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Token Expires In</div>
+                    <div class="info-value" id="tokenExpiryDisplay"></div>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="refreshSession()">
+                    <i class="fas fa-sync"></i> Refresh Session
+                </button>
+                <button class="btn btn-danger" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 Login System. All rights reserved.</p>
+    </div>
+
+    <script>
+        // Check if user is authenticated
+        window.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+        });
+
+        function checkAuthentication() {
+            const token = localStorage.getItem('authToken');
+            const user = JSON.parse(localStorage.getItem('user') || 'null');
+
+            if (!token || !user) {
+                // Redirect to login if not authenticated
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // User is authenticated, load dashboard
+            loadDashboard(user);
+        }
+
+        function loadDashboard(user) {
+            // Hide loading
+            document.getElementById('loadingState').style.display = 'none';
+
+            // Show sections
+            document.getElementById('welcomeSection').style.display = 'block';
+            document.getElementById('dashboardGrid').style.display = 'grid';
+            document.getElementById('accountSection').style.display = 'block';
+            document.getElementById('securitySection').style.display = 'block';
+
+            // Get greeting based on time
+            const hour = new Date().getHours();
+            let greeting = 'Good morning';
+            if (hour >= 12) greeting = 'Good afternoon';
+            if (hour >= 18) greeting = 'Good evening';
+
+            // Update welcome section
+            document.getElementById('welcomeName').textContent = user.username || user.email;
+            document.getElementById('userDisplay').textContent = `${user.username} (${user.email})`;
+            document.getElementById('welcomeTime').textContent = `${greeting}! Welcome back to your dashboard.`;
+
+            // Update profile info
+            document.getElementById('profileUsername').textContent = user.username || 'User';
+            document.getElementById('profileEmail').textContent = user.email;
+
+            // Update verification status
+            const verificationStatus = document.getElementById('verificationStatus');
+            if (user.is_verified) {
+                verificationStatus.innerHTML = '<div class="profile-badge"><i class="fas fa-check-circle"></i> Verified</div>';
+                document.getElementById('emailVerificationCard').innerHTML = 'Your email has been verified. <br><br><a class="card-link" href="#">Email Verified ✓</a>';
+            } else {
+                verificationStatus.innerHTML = '<div class="profile-badge unverified"><i class="fas fa-clock"></i> Pending Verification</div>';
+                document.getElementById('emailVerificationCard').innerHTML = 'Please verify your email address. <br><br><a class="card-link" href="#">Resend Verification →</a>';
+            }
+
+            // Update profile avatar
+            if (user.profile_picture) {
+                document.getElementById('profileAvatar').innerHTML = `<img src="${user.profile_picture}" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+            } else {
+                const initials = (user.username || user.email)[0].toUpperCase();
+                document.getElementById('profileAvatar').textContent = initials;
+            }
+
+            // Update account information
+            document.getElementById('displayEmail').textContent = user.email;
+            document.getElementById('displayUsername').textContent = user.username || 'N/A';
+            document.getElementById('displayUserId').textContent = `#${user.id}`;
+            document.getElementById('displaySignupMethod').textContent = user.signup_method || 'Email';
+
+            // Update session info
+            const token = localStorage.getItem('authToken');
+            document.getElementById('sessionTokenDisplay').textContent = token.substring(0, 16) + '...' + token.substring(token.length - 8);
+            document.getElementById('tokenExpiryDisplay').textContent = '24 hours from login';
+        }
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId + 'Section');
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function refreshSession() {
+            showAlert('Session refreshed successfully!', 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            }
+        }
+
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alertMessage');
+            alertDiv.textContent = message;
+            alertDiv.className = 'alert show ' + type;
+
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
